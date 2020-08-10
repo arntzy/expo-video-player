@@ -1,8 +1,7 @@
 import { __rest } from "tslib";
-import { Animated, Dimensions, Slider, Text, TouchableOpacity, TouchableWithoutFeedback, View, } from 'react-native';
 import { Audio, Video } from 'expo-av';
+import { Animated, Dimensions, Slider, Text, TouchableOpacity, TouchableWithoutFeedback, View, } from 'react-native';
 import { FullscreenEnterIcon, FullscreenExitIcon, PauseIcon, PlayIcon, ReplayIcon, Spinner, } from './assets/icons';
-import { useNetInfo } from '@react-native-community/netinfo';
 import { withDefaultProps } from 'with-default-props';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useEffect, useState } from 'react';
@@ -83,7 +82,6 @@ const VideoPlayer = (props) => {
     let hideAnimation = null;
     let shouldPlayAtEndOfSeek = false;
     let controlsTimer = null;
-    const { isConnected } = useNetInfo();
     const [playbackState, setPlaybackState] = useState(PlaybackStates.Loading);
     const [lastPlaybackStateUpdate, setLastPlaybackStateUpdate] = useState(Date.now());
     const [seekState, setSeekState] = useState(SeekStates.NotSeeking);
@@ -177,7 +175,7 @@ const VideoPlayer = (props) => {
                 }
                 else {
                     // If the video is buffering but there is no Internet, you go to the Error state
-                    if (!isConnected && status.isBuffering) {
+                    if (status.isBuffering) {
                         updatePlaybackState(PlaybackStates.Error);
                         setError('You are probably offline.' +
                             'Please make sure you are connected to the Internet to watch this video');
@@ -352,9 +350,8 @@ const VideoPlayer = (props) => {
         videoHeight = videoWidth / screenRatio;
     }
     // Do not let the user override `ref`, `callback`, and `style`
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { ref, style, onPlaybackStatusUpdate, source } = videoProps, otherVideoProps = __rest(videoProps, ["ref", "style", "onPlaybackStatusUpdate", "source"]);
     const Control = (_a) => {
         var { callback, center, children, transparent = false } = _a, otherProps = __rest(_a, ["callback", "center", "children", "transparent"]);
@@ -432,6 +429,7 @@ const VideoPlayer = (props) => {
         
         {seekState !== SeekStates.Seeking &&
         (playbackState === PlaybackStates.Playing || playbackState === PlaybackStates.Paused) && (<CenteredView pointerEvents={controlsState === ControlStates.Hidden ? 'none' : 'auto'} 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     style={{ opacity: controlsOpacity }}>
               <Control center={true} callback={togglePlay}>

@@ -1,4 +1,4 @@
-import { AVPlaybackStatus, VideoProps } from 'expo-av/build/Video';
+import { AVPlaybackStatus, VideoProps } from 'expo-av';
 import { ImageURISource, TextStyle } from 'react-native';
 import { Color } from 'csstype';
 import { ReactNode } from 'react';
@@ -9,7 +9,7 @@ declare enum ErrorSeverity {
 declare type Error = {
     type: ErrorSeverity;
     message: string;
-    obj: object;
+    obj: Record<string, unknown>;
 };
 declare type Props = {
     videoProps: VideoProps;
