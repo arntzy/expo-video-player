@@ -24,7 +24,7 @@ import {
   ReplayIcon,
   Spinner,
 } from './assets/icons'
-import { useNetInfo } from '@react-native-community/netinfo'
+
 import { withDefaultProps } from 'with-default-props'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { ReactNode, useEffect, useState } from 'react'
@@ -164,7 +164,6 @@ const VideoPlayer = (props: Props) => {
   let shouldPlayAtEndOfSeek = false
   let controlsTimer: NodeJS.Timeout | null = null
 
-  const { isConnected } = useNetInfo()
   const [playbackState, setPlaybackState] = useState<PlaybackStates>(PlaybackStates.Loading)
   const [lastPlaybackStateUpdate, setLastPlaybackStateUpdate] = useState<number>(Date.now())
   const [seekState, setSeekState] = useState<SeekStates>(SeekStates.NotSeeking)
@@ -287,7 +286,7 @@ const VideoPlayer = (props: Props) => {
           updatePlaybackState(PlaybackStates.Ended)
         } else {
           // If the video is buffering but there is no Internet, you go to the Error state
-          if (!isConnected && status.isBuffering) {
+          if (!status.isBuffering) {
             updatePlaybackState(PlaybackStates.Error)
             setError(
               'You are probably offline.' +
